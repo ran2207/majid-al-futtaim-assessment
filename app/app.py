@@ -16,10 +16,10 @@ def campaigns() -> List[Dict]:
     }
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor()
-    cursor.execute(
-        "SELECT * FROM campaigns WHERE CAMPAIGN_NAME='Campaign A' LIMIT 100")
-    results = [{CAMPAIGN_NAME: CAMPAIGN_TYPE}
-               for (CAMPAIGN_NAME, CAMPAIGN_TYPE) in cursor]
+    cursor.execute('SELECT * FROM campaigns')
+
+    results = [{"CAMPAIGN_NAME": CAMPAIGN_TYPE}
+               for (CAMPAIGN_NAME, CAMPAIGN_TYPE, *other) in cursor]
     cursor.close()
     connection.close()
 
