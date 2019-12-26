@@ -4,7 +4,6 @@ services:
     build: ./app
     links:
       - db
-
     entrypoint:
       - flask
       - run
@@ -23,3 +22,16 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./db:/docker-entrypoint-initdb.d/:ro
+
+  web:
+    command: yarn dev
+    links:
+      - app
+    environment:
+      REACT_APP_API_URI: http://localhost:5000
+    image: node
+    ports:
+      - 3030:3000
+    volumes:
+      - ./web:/www
+    working_dir: /www
