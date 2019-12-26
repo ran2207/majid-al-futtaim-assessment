@@ -1,7 +1,6 @@
 from typing import List, Dict
-from flask import Flask
+from flask import Flask, jsonify
 import mysql.connector
-import json
 
 app = Flask(__name__)
 
@@ -16,7 +15,7 @@ def campaigns() -> List[Dict]:
     }
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor()
-    cursor.execute('SELECT * FROM campaigns LIMIT 10')
+    cursor.execute('SELECT * FROM campaigns LIMIT 100')
 
     results = [{"CAMPAIGN_NAME": CAMPAIGN_TYPE}
                for (CAMPAIGN_NAME, CAMPAIGN_TYPE, *other) in cursor]
@@ -29,7 +28,7 @@ def campaigns() -> List[Dict]:
 
 @app.route('/')
 def index() -> str:
-    return json.dumps({'campaigns': campaigns()})
+    return jsonify({'campaigns': campaigns()})
 
 
 if __name__ == '__main__':
